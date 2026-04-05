@@ -1,0 +1,55 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Function to compare elements for sorting
+int compare(const void *a, const void *b) {
+    return (*(int *)a - *(int *)b);
+}
+
+int main() {
+    int n;
+
+    // Read size
+    scanf("%d", &n);
+
+    int arr[n];
+
+    // Read array elements
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+
+    // Sort the array
+    qsort(arr, n, sizeof(int), compare);
+
+    int left = 0;
+    int right = n - 1;
+
+    int minSum = arr[left] + arr[right];
+    int minLeft = arr[left];
+    int minRight = arr[right];
+
+    // Two-pointer approach
+    while (left < right) {
+
+        int sum = arr[left] + arr[right];
+
+        // Update closest sum
+        if (abs(sum) < abs(minSum)) {
+            minSum = sum;
+            minLeft = arr[left];
+            minRight = arr[right];
+        }
+
+        // Move pointers
+        if (sum < 0)
+            left++;
+        else
+            right--;
+    }
+
+    // Print result
+    printf("%d %d", minLeft, minRight);
+
+    return 0;
+}
