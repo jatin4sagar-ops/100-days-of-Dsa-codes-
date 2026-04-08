@@ -1,0 +1,97 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Node structure
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Function to create a linked list
+struct Node* createList(int n) {
+
+    struct Node *head = NULL, *temp = NULL, *newNode;
+
+    for (int i = 0; i < n; i++) {
+
+        int value;
+        scanf("%d", &value);
+
+        newNode = (struct Node*)malloc(sizeof(struct Node));
+        newNode->data = value;
+        newNode->next = NULL;
+
+        if (head == NULL) {
+            head = newNode;
+            temp = head;
+        }
+        else {
+            temp->next = newNode;
+            temp = newNode;
+        }
+    }
+
+    return head;
+}
+
+// Function to merge two sorted lists
+struct Node* mergeLists(struct Node* list1, struct Node* list2) {
+
+    struct Node dummy;
+    struct Node* tail = &dummy;
+    dummy.next = NULL;
+
+    while (list1 != NULL && list2 != NULL) {
+
+        if (list1->data <= list2->data) {
+            tail->next = list1;
+            list1 = list1->next;
+        }
+        else {
+            tail->next = list2;
+            list2 = list2->next;
+        }
+
+        tail = tail->next;
+    }
+
+    // Attach remaining nodes
+    if (list1 != NULL)
+        tail->next = list1;
+    else
+        tail->next = list2;
+
+    return dummy.next;
+}
+
+// Function to print list
+void printList(struct Node* head) {
+
+    struct Node* temp = head;
+
+    while (temp != NULL) {
+        printf("%d ", temp->data);
+        temp = temp->next;
+    }
+}
+
+int main() {
+
+    int n, m;
+
+    // First list
+    scanf("%d", &n);
+    struct Node* list1 = createList(n);
+
+    // Second list
+    scanf("%d", &m);
+    struct Node* list2 = createList(m);
+
+    // Merge lists
+    struct Node* merged = mergeLists(list1, list2);
+
+    // Print merged list
+    printList(merged);
+
+    return 0;
+}
